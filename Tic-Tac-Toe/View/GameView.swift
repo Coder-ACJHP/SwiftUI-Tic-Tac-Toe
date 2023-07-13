@@ -15,19 +15,24 @@ struct GameView: View {
         
         GeometryReader { reader in
             VStack {
+                
                 Spacer()
                 
                 LazyVGrid(columns: viewModel.colums) {
                     ForEach(0 ..< 9) { index in
                         ZStack {
+                            // Create circles
                             GameCirleView(proxy: reader)
+                            // Draw indicators for players
                             PlayerIndicatorView(systemImageName: viewModel.moves[index]?.indicator ?? "")
                         }
                         .onTapGesture {
+                            // What's happening when user taps on circles
                             viewModel.processPlayerMove(for: index)
                         }
                     }
                 }
+                // Disable all touches for a while
                 .disabled(viewModel.isGameBoardDisabled)
                 .padding([.leading, .trailing], 30)
                 .alert(item: $viewModel.alertItem) { alertItem in
